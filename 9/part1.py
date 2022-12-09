@@ -68,6 +68,42 @@ yStarting = abs(dMax)
 
 print(f"Head should start at {xStarting},{yStarting}.")
 
+# Create the playfield and corresponding visited field
+
+playField = []
+visitedField = []
+
+for r in range(yDist):
+	newRow = []
+	newRowVisited = []
+	for c in range(xDist):
+		newRow.append('-')
+		newRowVisited.append(0)
+	
+	playField.append(newRow)
+	visitedField.append(newRowVisited)
+
+# yStarting has to be adjusted to move it relative to the bottom of the field
+yStarting = len(playField) - yStarting - 1
+
+playField[yStarting][xStarting] = 'H'
+visitedField[yStarting][xStarting] = 1
+
+print("### Starting Playfield ###")
+for row in playField:
+	print(row)
+
+print("### Starting Tail Visited Field ###")
+for row in visitedField:
+	print(row)
+
+# Track x and y positions of the tail and head respectively
+xTail = xStarting
+yTail = yStarting
+xHead = xStarting
+yHead = yStarting
+
+
 
 
 
