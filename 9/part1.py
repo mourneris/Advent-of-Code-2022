@@ -83,6 +83,8 @@ for r in range(yDist):
 	playField.append(newRow)
 	visitedField.append(newRowVisited)
 
+EMPTY_FIELD = playField # Keep a copy of the empty field with nothing on it.
+
 # yStarting has to be adjusted to move it relative to the bottom of the field
 yStarting = len(playField) - yStarting - 1
 
@@ -103,6 +105,19 @@ yTail = yStarting
 xHead = xStarting
 yHead = yStarting
 
+for i in range(len(directions)):
+	for s in range(amounts[i]):
+		match directions[i]:
+			case 'R':
+				xHead += 1
+			case 'L':
+				xHead -= 1
+			case 'U':
+				yHead += 1
+			case 'D':
+				yHead -= 1
+
+		# Tail checks here
 
 
 
