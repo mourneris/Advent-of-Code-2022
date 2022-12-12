@@ -77,10 +77,6 @@ class Monkey:
 		else:
 			return self.throwItem(self.isFalseTarget, worryLevel)
 		
-		
-
-
-
 # Grab Input from File
 file = open(TARGET_FILE, "r")
 
@@ -127,6 +123,3 @@ monkeyBusiness.sort(reverse=True)
 maxMonkeyBusiness = monkeyBusiness[0] * monkeyBusiness[1]
 
 print(f"Answer is {maxMonkeyBusiness}")
-
-
-		
