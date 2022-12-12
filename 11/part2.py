@@ -1,8 +1,7 @@
 import math
 
-TARGET_FILE = "exampleInput.txt"
-NUM_ROUNDS = 20 # Number of rounds over which we'll be observing behavior
-DIVIDE_BY = 3 # What it divides by after inspection
+TARGET_FILE = "actualInput.txt"
+NUM_ROUNDS = 10000 # Number of rounds over which we'll be observing behavior
 
 # Monkey Business = Product of the two highest monkeys' number of items inspected
 
@@ -60,16 +59,16 @@ class Monkey:
 			case '/':
 				return old / arg
 
-	def inspect(self, itemNum):
+	def inspect(self, itemNum, supermodulo):
 		self.itemsCounted += 1
 		worryLevel = 0
 
-		if self.Argument == "old":
-			worryLevel = self.perfOp(itemNum, itemNum)
-		else:
-			worryLevel = self.perfOp(itemNum, int(self.Argument))
+		workingNumber = itemNum % supermodulo
 
-		worryLevel = math.floor(worryLevel / DIVIDE_BY)
+		if self.Argument == "old":
+			worryLevel = self.perfOp(workingNumber, workingNumber)
+		else:
+			worryLevel = self.perfOp(workingNumber, int(self.Argument))
 
 		self.Items.remove(itemNum)
 		
@@ -98,13 +97,19 @@ for m in range(0,len(fileInput),6):
 	# print(monkeyInput)
 	monkeys.append(Monkey(monkeyInput))
 
-for i in range(20):
+# Find the supermodulo
+
+supermodulo = 1
+for monkey in monkeys:
+	supermodulo *= monkey.Divisor
+
+for i in range(NUM_ROUNDS):
 	for monkey in monkeys:
 		# print(monkey)
 		
 		for item in monkey.Items.copy():
 			# print(f"Current item is {item}")
-			thrown = monkey.inspect(item)
+			thrown = monkey.inspect(item, supermodulo)
 			target = thrown[0]
 			itemThrown = thrown[1]
 			# print(f"Monkey {monkey.ID} threw {itemThrown} to monkey {target}.")
@@ -115,11 +120,13 @@ monkeyBusiness = []
 for monkey in monkeys:
 	monkeyBusiness.append(monkey.itemsCounted)
  
+print(monkeyBusiness)
+
 monkeyBusiness.sort(reverse=True)
 
 maxMonkeyBusiness = monkeyBusiness[0] * monkeyBusiness[1]
 
-print(maxMonkeyBusiness)
+print(f"Answer is {maxMonkeyBusiness}")
 
 
 		
