@@ -4,21 +4,21 @@ TARGET_FILE = "exampleInput.txt"
 
 class Tile:
 	Symbol = ''
+	SymbolValue = -1
 	XPos = -1
 	YPos = -1
-	ValidMoves = []
 	isHiker = False
 	isExit = False
 
-	def __init__(self, Symbol = '', Pos = (-1,-1), ValidMoves = []):
+	def __init__(self, Symbol = '', Pos = (-1,-1)):
 		self.Symbol = Symbol
+		self.SymbolValue = ord(self.Symbol)
 		self.XPos, self.YPos = Pos
-		self.ValidMoves = ValidMoves
 
 		self.updateStatus()
 
 	def __str__(self):
-		return f"Tile at {self.XPos}, {self.YPos} with symbol {self.Symbol} and valid moves {self.ValidMoves}. Is it the hiker? {self.isHiker}. Is it the exit? {self.isExit}"
+		return f"Tile at {self.XPos}, {self.YPos} with symbol {self.Symbol}. Is it the hiker? {self.isHiker}. Is it the exit? {self.isExit}"
 
 	def updateStatus(self):
 		match(self.Symbol):
@@ -34,10 +34,8 @@ class Tile:
 
 	def updateTile(self, newSymbol):
 		self.Symbol = newSymbol
+		self.SymbolValue = ord(self.Symbol)
 		self.updateStatus()
-
-	def updateValidMoves(self, validMoves):
-		self.ValidMoves = validMoves
 
 class TopoMap:
 	TopoMap = []
@@ -51,8 +49,12 @@ class TopoMap:
 			
 			self.TopoMap.append(newRow)
 
-	def defineValidMoves(self):
-		print("Temporary Print To Keep Python From Freaking Out") 
+	# Define function which takes two Tile objects and returns the height difference between them
+	def heightDiff(self, tile1, tile2):
+		return tile2.SymbolValue - tile1.SymbolValue
+	
+	
+
 
 # --------------------------------------------------------------------------
 
