@@ -53,8 +53,6 @@ class TopoMap:
 	def heightDiff(self, tile1, tile2):
 		return tile2.SymbolValue - tile1.SymbolValue
 	
-	
-
 
 # --------------------------------------------------------------------------
 
