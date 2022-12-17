@@ -30,12 +30,13 @@ def findAllBrackets(str):
 
 # --------------------------------------------------------------------
 
-file = open(TARGET_FILE, 'r')
-
 rawFileInput = []
-for line in file:
-	if line.rstrip() != '':
-		rawFileInput.append(line.rstrip())
+with open(TARGET_FILE, 'r') as file:
+	for line in file:
+		if line.rstrip() != '':
+			rawFileInput.append(line.rstrip())
+
+file.close()
 
 for p in range(0, len(rawFileInput), 2):
 	m1 = rawFileInput[p]
