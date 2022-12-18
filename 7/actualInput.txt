@@ -977,3 +977,6 @@ $ cd nmtjtd
 $ ls
 47477 dvqmqlgw.ths
 51081 vqgsglwq
+$ cd ..
+$ cd ..
+$ cd ..
