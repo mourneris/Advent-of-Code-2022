@@ -25,7 +25,6 @@ for output in termOutput[2:]:
 					print(f"Moved Up to Folder: {path}")
 
 					# Update Size of the Parent
-					# print(f"Increasing size of {path} by {size} of folder {prevPath}")
 					folderSize = folders[path] + size
 					folders.update({path : folderSize})
 				case Default:
@@ -34,9 +33,7 @@ for output in termOutput[2:]:
 					print(f"Moved Down to Folder: {path}")
 		elif output[1] == "ls":
 			pass
-			# print("List (ls) command ignored...")
 	elif output[0] != "dir":
-		# print(f"Increasing size of {path} by {output[0]} of file {output[1]}")
 		folderSize = folders[path] + int(output[0])
 		folders.update({path : folderSize})
 

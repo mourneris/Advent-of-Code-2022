@@ -1,126 +1,66 @@
-targetFile = "exampleInput.txt"
+TARGET_FILE = "actualInput.txt"
 
-# Prepare to open and read contents
-file = open(targetFile, "r")
+commands = ""
 
-instructions = []
-for line in file:
-	line = line.rstrip()
-	instructions.append(line)
+def toFString(x, y):
+	return f"{x},{y}"
 
-file.close()
-# -----------------------------------------------------------------------------------------------------------------------------
+def fromFString(fStr):
+	return list(map(int, fStr.split(',')))
 
-# Break instructions into directions and amounts
-directions = []
-amounts = []
-for instruction in instructions:
-	directions.append((instruction.split(' '))[0])
-	amounts.append(int((instruction.split(' '))[1]))
-# -----------------------------------------------------------------------------------------------------------------------------
+with open(TARGET_FILE, 'r') as file:
+	for line in file:
+		dir, amt = line.rstrip().split(' ')
+		commands += (dir * int(amt))
+        
+xTail = 0
+yTail = 0
 
-# Find the boundaries for the field as well as the starting position of the head to keep values positive
+xHead = 0
+yHead = 0
 
-# We're going to do this by tracking just the head through the list of instructions
-xPos = 0
-yPos = 0
+print(f"The Commands (For Reference): {commands}")
 
-rMax = 0 # Maximum boundary rightward
-lMax = 0 # Maximum boundary leftward
-uMax = 0 # Maximum boundary upward 
-dMax = 0 # Maximum boundary downward
+visited = {toFString(xTail, yTail) : True}
 
-for i in range(len(directions)):
-	# print(f"Command: Move {directions[i]} {amounts[i]} spots...")
-	match directions[i]:
+for cmd in commands:
+	# * Head Logic
+	match(cmd):
 		case 'R':
-			xPos += amounts[i]
-			if xPos > rMax:
-				rMax = xPos
+			xHead += 1
 		case 'L':
-			xPos -= amounts[i]
-			if xPos < lMax:
-				lMax = xPos
+			xHead -= 1
 		case 'U':
-			yPos += amounts[i]
-			if yPos > uMax:
-				uMax = yPos
+			yHead += 1
 		case 'D':
-			yPos -= amounts[i]
-			if yPos < dMax:
-				dMax = yPos
-		case _:
-			print("Command unrecognized. Exiting...")
-			break
-
-	# print(f"New position is {xPos},{yPos}...")
-	# print(f"Boundaries: U = {uMax}, R = {rMax}, D = {dMax}, L = {lMax}")
+			yHead -= 1
 	
-# Calculate the distances traversed on the x-axis and y-axis
-xDist = rMax - lMax + 1
-yDist = uMax - dMax + 1
-
-print(f"Playing field has to be {xDist} wide by {yDist} tall.")
-
-# The starting position is the absolute value of the leftward max and the downward max, x and y, respectively.
-xStarting = abs(lMax)
-yStarting = abs(dMax)
-
-print(f"Head should start at {xStarting},{yStarting}.")
-
-# Create the playfield and corresponding visited field
-
-playField = []
-visitedField = []
-
-for r in range(yDist):
-	newRow = []
-	newRowVisited = []
-	for c in range(xDist):
-		newRow.append('-')
-		newRowVisited.append(0)
+	print(f"Head @ ({xHead},{yHead})")
 	
-	playField.append(newRow)
-	visitedField.append(newRowVisited)
+	# * Tail Logic
+	xDiff = xHead - xTail
+	yDiff = yHead - yTail
+	
+	print(f"Tail Starting @ ({xTail},{yTail})")
+	print(f"Dist. from Head to Tail is ({xDiff},{yDiff})")
 
-EMPTY_FIELD = playField # Keep a copy of the empty field with nothing on it.
+	if xDiff == 2:
+		xTail += 1
+		yTail = yTail if yTail == yHead else yHead
+	elif xDiff == -2:
+		xTail -= 1
+		yTail = yTail if yTail == yHead else yHead
+	if yDiff == 2:
+		yTail += 1
+		xTail = xTail if xTail == xHead else xHead
+	elif yDiff == -2:
+		yTail -= 1
+		xTail = xTail if xTail == xHead else xHead
 
-# yStarting has to be adjusted to move it relative to the bottom of the field
-yStarting = len(playField) - yStarting - 1
+	visited.update({toFString(xTail, yTail) : True})
 
-playField[yStarting][xStarting] = 'H'
-visitedField[yStarting][xStarting] = 1
+	print(f"Tail Ending @ ({xTail},{yTail})")
 
-print("### Starting Playfield ###")
-for row in playField:
-	print(row)
-
-print("### Starting Tail Visited Field ###")
-for row in visitedField:
-	print(row)
-
-# Track x and y positions of the tail and head respectively
-xTail = xStarting
-yTail = yStarting
-xHead = xStarting
-yHead = yStarting
-
-for i in range(len(directions)):
-	for s in range(amounts[i]):
-		match directions[i]:
-			case 'R':
-				xHead += 1
-			case 'L':
-				xHead -= 1
-			case 'U':
-				yHead += 1
-			case 'D':
-				yHead -= 1
-
-		# Tail checks here
-
-
-
-
-
+print(f"The tail visited {len(visited)} tiles at least once.")
+	
 
